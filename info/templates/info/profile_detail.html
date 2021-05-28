@@ -1,0 +1,433 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="">
+<div class="container emp-profile">
+        
+        <br/>
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div id = "carouselwithIndicators" class = "carousel slide" data-ride = "carousel">
+                    <ol class = "carousel-indicators">
+                        {% for img in object.user.img.all  %}
+                       <li data-target = "#carouselExampleIndicators" data-slide-to = "{{forloop.counter0}}" class = "active"></li>
+                       {% endfor %}
+                    </ol>
+                    
+                    <div class =" carousel-inner">
+                        {% for img in object.user.img.all  %}
+                         {% if forloop.first %}
+                       <div class = "carousel-item active">
+                          <img class = "d-block w-100 img_detailView" src="{{img.image.url}}" alt = "First slide">
+                       </div>
+
+                       {% else %}
+                       <div class = "carousel-item">
+                          <img class = "d-block w-100 img_detailView" src="{{img.image.url}}" alt = "Second slide">
+                       </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <a class = "carousel-control-prev" href = "#carouselwithIndicators" role = "button" data-slide = "prev">
+                       <span class = "carousel-control-prev-icon" aria-hidden = "true"></span>
+                       <span class = "sr-only">Previous</span>
+                    </a>
+                    
+                    <a class = "carousel-control-next" href = "#carouselwithIndicators" role = "button" data-slide = "next">
+                       <span class = "carousel-control-next-icon" aria-hidden = "true"></span>
+                       <span class = "sr-only">Next</span>
+                    </a>
+                 </div>
+                 <!-- CAROUSAL END-->
+                <br>
+                <div>
+                    {% if request.user != object.user %}
+                    {%if not requested %}
+                    <a href="{%url 'info:request' object.id %}" data-toggle="tooltip" title="You will receive contact information on your registered Email-ID after approved by Admin">
+
+                        <button class="btn btn-success add">Show Interest and Request More Information</button>
+
+                    </a>
+                    {% else %}
+                    <button type="button" class="btn btn-secondary" disabled>Information Already Requested by you</button>
+                    {% endif %}
+                    {% endif %}
+                </div><br/>
+            </div>
+            <div class="col-md-8">
+                <div class="profile-head">
+                            <h5 class="d-flex justify-content-between">
+                                {{object.user.full_name}}
+                                {% if request.user == object.user %}
+                                <a href="{% url 'info:update' object.id %}"><button class="btn btn-primary add">Update Profile</button></a>
+                                {% endif %}
+                            </h5>
+                            <h6 class="d-flex justify-content-md-start">
+                                {{object.occupation}}
+                            </h6>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personalInfo" role="tab" aria-controls="home" aria-selected="true">Personal Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="family-tab" data-toggle="tab" href="#familyInfo" role="tab" aria-controls="profile" aria-selected="false">Family Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="horoscope-tab" data-toggle="tab" href="#horoscopeInfo" role="tab" aria-controls="profile" aria-selected="false">Horoscope Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="lifestyle-tab" data-toggle="tab" href="#lifestyle" role="tab" aria-controls="profile" aria-selected="false">Life Style</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <!-- Personal Information -->
+                            <div class="tab-pane fade show active" id="personalInfo" role="tabpanel" aria-labelledby="home-tab">
+                              <div class="row">
+                                  <div class="col-xs-6 col-md-6">
+                                      <label><b>Navaras Name:</b></label>
+                                  </div>
+                                  <div class="col-xs-6 col-md-6">
+                                      <p>{{object.navaras}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Marital Status:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.maritial_status}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Age:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.age}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Height (In ft.):</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.height}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Weight (In kg.):</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.weight}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Body Type:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.body_type}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Date of Birth:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.birthdate}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Place of Birth:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.birthplace}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Blood Group:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.blood_group}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Mother Tongue:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.mother_tongue}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Religion:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.religion}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Caste:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.caste}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Sub-Caste:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.sub_caste}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                    <label><b>Occupation:</b></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{object.occupation}}</p>
+                                </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Occupation Details:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.occupation_detail}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Annual Income:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.annual_income}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Education:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.education}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Education Details:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.education_detail}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Current Location:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.current_location}}</p>
+                                  </div>
+                              </div>
+                            </div>
+                            <!-- Family Information -->
+                            <div class="tab-pane fade" id="familyInfo" role="tabpanel" aria-labelledby="profile-tab">
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Father Name:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.father_name}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Father Occupation:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.father_occupation}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Mother Name:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.mother_name}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Number of Brothers:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.brother_count}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Number of Sisters:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.sister_count}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Number of Uncle (Kaka):</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.uncle_count}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Number of Aunts(Atya):</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.atya_count}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Number of Aunts(Mavsi):</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.mavasi_count}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Other Relatives:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.other_relatives}}</p>
+                                  </div>
+                              </div>
+                            </div>
+                            <!-- Horoscope Information -->
+                            <div class="tab-pane fade" id="horoscopeInfo" role="tabpanel" aria-labelledby="profile-tab">
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Devak:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.devak}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Mana:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.mana}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Nadi:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.nadi}}</p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Rassi:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.rassi}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Lifestyle Information -->
+                            <div class="tab-pane fade" id="lifestyle" role="tabpanel" aria-labelledby="profile-tab">
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Eating Habits:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.eating_habits}}</p>
+                                </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Drinking Habits:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.drink_habit}}</p>
+                                </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Smoking Habits:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.smoke_habit}}</p>
+                                </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Hobbies:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.hobbies}}</p>
+                                </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label><b>Expectations from future partner:</b></label>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <p>{{object.expectations}}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br/>
+        <!-- </div>
+        <div class="row"> -->
+            <!--<div class="col-md-4">
+                 <div class="profile-work">
+                    <p>WORK LINK</p>
+                    <a href="">Website Link</a><br/>
+                    <a href="">Bootsnipp Profile</a><br/>
+                    <a href="">Bootply Profile</a>
+                    <p>SKILLS</p>
+                    <a href="">Web Designer</a><br/>
+                    <a href="">Web Developer</a><br/>
+                    <a href="">WordPress</a><br/>
+                    <a href="">WooCommerce</a><br/>
+                    <a href="">PHP, .Net</a><br/>
+                </div> 
+            </div>-->
+            
+    </div>
+</div>
+{% endblock content %}
+{% block extra_scripts %}
+<script>
+var swiper = new Swiper('.swiper-container', {
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+  },
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+});
+</script>
+{% endblock extra_scripts %}

@@ -1,0 +1,67 @@
+{% load static %}
+<!-- navigaion start -->
+  <nav class="navbar navbar-expand-sm bg-light navbar-light static-top bgHeaderFooter">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'info:home' %}">
+            <img src="{% static 'images/Logo.png' %}" alt="Shubh Vivah Logo">
+          </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'info:home' %}">Home
+                  <span class="sr-only">(current)</span>
+                </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'info:about_us' %}">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'info:services' %}">Services</a>
+          </li>
+          <!-- Contact Us not required -->
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#">Contact Us</a>
+          </li> -->
+          <li class="nav-item">
+            {%if request.user.gender == 'Male' %}
+            <a class="nav-link" href="{% url 'info:profile-list' %}">Brides</a>
+            {% endif %}
+            {%if request.user.gender == 'Female' %}
+            <a class="nav-link" href="{% url 'info:profile-list' %}">Grooms</a>
+            {% endif %}
+          </li>
+          {% if user.is_authenticated %}
+            {% if user.profile_active %}
+              {% if  user.profile.paid is False%}
+                  <li class="nav-item">
+                <a class="nav-link" href="{% url 'info:payment' %}">Payment</a>
+              </li>
+              {%endif%}
+            {%endif%}
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><span class="nav-label font-weight-bold">Welcome {{user}}({{request.user.profile.id}}) </span><span class="iconify" data-icon="ion-ios-arrow-down"></a>
+
+              <ul class="dropdown-menu .bg-light">
+              {% if user.profile_active %}
+
+              <li class="nav-item">
+               <a class="nav-link" href="{% url 'info:profile-detail' request.user.profile.id %}">MyProfile</a>
+             </li>
+             {% endif %}
+             <li class="nav-item">
+              <a class="nav-link" href="{% url 'info:change_password' %}">Change Password</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'info:logout' %}?next=/">Logout</a>
+            </li>
+            </ul>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- navigaion end -->

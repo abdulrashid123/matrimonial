@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-8">
+      <div class="card mb-4">
+        <div class="card-body">
+            <h2>Payment</h2>
+            <img src="{% static 'images/QR.jpeg' %}" alt="QR Code" class="center"><br/>
+            <label><b>Notes to pay subsription charges:</b></label>
+            <ul style="margin-left: 25px;">
+                <li>Scan the above QR code through any online payment app</li>
+                <li>Pay the subscription fee - Rs 1000/year</li>
+                <li>Upload the payment receipt in the below form and submit</li>
+                <li>Admin will approve your registration once after successful completion of profile and payment</li>
+            </ul>
+            {% if payment_stat %}
+            <h4 class="text-success text-center">You already uploaded the receipt</h4>
+            <h4 class="text-success text-center">Kindly Wait for approval by admin</h4>
+            {%else%}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" id="btnUpload" class="btn btn-primary">Upload Receipt</button>
+            </form>
+            {%endif%}
+        </div>
+    </div>
+  </div>
+</div>
+{%endblock content %}
+{% block extra_scripts %}
+<script>
+  $(document).ready(function(){
+    $("#btnUpload" ).click(function() {
+      if(document.getElementById("id_image").value == "") {
+        alert("Please upload a valid payment receipt file");
+        return false;
+      }
+    });
+  });
+</script>
+{% endblock extra_scripts %}

@@ -1,0 +1,934 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+<!-- registration form comes here -->
+<!-- MultiStep Form -->
+<!-- <div class="container"> -->
+
+<!--{{profile.images.all|first}}-->
+
+<div class="container-fluid" id="grad1">
+    <div class="row justify-content-center mt-0">
+        <div class="col-11 col-sm-9 col-md-7 col-lg-6 p-0 mt-3 mb-2">
+            <div class="card px-0 pt-4 pb-0 mt-3 mb-3 bgProfileForm">
+                <h2 class="text-center"><strong>Create your profile</strong></h2>
+                <p class="text-center">Fill the correct information in below fields</p>
+                <div class="row" style="margin-right: 0px; margin-left: 0px;">
+                    <div class="col-md-12 mx-0">
+                        <div class="stepwizard">
+                            <div class="stepwizard-row setup-panel">
+                                <div class="stepwizard-step col-xs-2"> 
+                                    <a href="#step-1" type="button" class="btn btn-success btn-circle">1</a>
+                                    <p><small>Personal Info</small></p>
+                                </div>
+                                <div class="stepwizard-step col-xs-2"> 
+                                    <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                                    <p><small>Lifestyle Info</small></p>
+                                </div>
+                                <div class="stepwizard-step col-xs-2"> 
+                                    <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                                    <p><small>Horoscope Info</small></p>
+                                </div>
+                                <div class="stepwizard-step col-xs-2"> 
+                                    <a href="#step-4" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
+                                    <p><small>Family Info</small></p>
+                                </div>
+                                <div class="stepwizard-step col-xs-2"> 
+                                    <a href="#step-5" type="button" class="btn btn-default btn-circle" disabled="disabled">5</a>
+                                    <p><small>Residential Info</small></p>
+                                </div>
+                                <div class="stepwizard-step col-xs-2"> 
+                                    <a href="#step-6" type="button" class="btn btn-default btn-circle" disabled="disabled">6</a>
+                                    <p><small>Self Declare</small></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div id="loader" style="display: none" >
+                                <div>
+                                <img src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="Submitting your information.." />
+                                </div>
+                            </div>
+                        </div>
+                        <form role="form" method="post" id="myForm" enctype="multipart/form-data" action="">
+                            {% csrf_token %}
+                            <div class="panel panel-primary setup-content" id="step-1">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Personal Information</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="navarasname">Navaras Name*:</label>
+                                        <input type="text" name="navaras" value="{{profile.navaras}}" class="form-control" placeholder="Navaras Name" autofocus required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="maritalStatus">Marital Status*:</label>
+                                            {% if profile.maritial_status == 'single'%}
+                                            <input type="radio" style="width:5%;" name="maritial_status" value="single" checked>                                        
+                                            <label for="radio">Unmarried</label>
+                                            <input type="radio" style="width:5%;" name="maritial_status" value="divorced">
+                                            <label for="radio">Divorced</label>
+                                            <input type="radio" style="width:5%;" name="maritial_status" value="widowed">
+                                            <label for="radio">Widowed</label>
+                                            {% elif profile.maritial_status == 'divorced'%}
+                                            <input type="radio" style="width:5%;" name="maritial_status" value="single">                                        
+                                            <label for="radio">Unmarried</label>
+                                            <input type="radio" style="width:5%;" name="maritial_status" value="divorced" checked>
+                                            <label for="radio">Divorced</label>
+                                            <input type="radio" style="width:5%;" name="maritial_status" value="widowed">
+                                            <label for="radio">Widowed</label>
+                                            {%else%}
+                                            <input type="radio" style="width:5%;" name="maritial_status" value="single">                                        
+                                            <label for="radio">Unmarried</label>
+                                            <input type="radio" style="width:5%;" name="maritial_status" value="divorced">
+                                            <label for="radio">Divorced</label>
+                                            <input type="radio" style="width:5%;" name="maritial_status" value="widowed" checked>
+                                            <label for="radio">Widowed</label>
+                                            {%endif%}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="age">Age*:</label>
+                                        <input type="number" name="age" value="{{profile.age}}" class="form-control" placeholder="In Years 0-60" min="0" max="60" value={{form.age.value}} required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="height">Height*:</label>
+                                        <input type="number" value="{{profile.height}}" name="height" class="form-control" placeholder="In ft. 0-8.0" min="0" max="8.0" step="any" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="weight">Weight*:</label>
+                                        <input type="number" name="weight" value="{{profile.weight}}" class="form-control" placeholder="In Kg. 0-150.0" min="0" max="150.0" step="any" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dob">Date of Birth*:</label>
+                                        <input type="date" name="birthdate" value="{{profile.birthdate}}" id='date' class="form-control" required/>
+                                        <!-- <input type="date" name="birthdate" value="2000-05-05" class="form-control" required/> -->
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bloodgp">Blood Group*:</label>
+                                        <select class="list-dt" class="form-control" name="blood_group">
+                                            {% if profile.blood_group == 'A+'%}
+                                            <option value="A+" selected>A +ve</option>
+                                            {%else%}
+                                            <option value="A+">A +ve</option>
+                                            {%endif%}
+
+                                            {% if profile.blood_group == 'B+'%}
+                                            <option value="B+" selected>B +ve</option>
+                                            {%else%}
+                                            <option value="B+">B +ve</option>
+                                            {%endif%}
+
+                                            {% if profile.blood_group == 'A-'%}
+                                            <option value="A-" selected>A -ve</option>
+                                            {%else%}
+                                            <option value="A-">A -ve</option>
+                                            {%endif%}
+
+                                            {% if profile.blood_group == 'B-'%}
+                                            <option value="B-" selected>B -ve</option>
+                                            {%else%}
+                                            <option value="B-">B -ve</option>
+                                            {%endif%}
+
+                                            {% if profile.blood_group == 'AB+'%}
+                                            <option value="AB+" selected>AB +ve</option>
+                                            {%else%}
+                                            <option value="AB+">AB +ve</option>
+                                            {%endif%}
+
+                                            {% if profile.blood_group == 'AB-'%}
+                                            <option value="AB-" selected>AB -ve</option>
+                                            {%else%}
+                                            <option value="AB-">AB -ve</option>
+                                            {%endif%}
+
+                                            {% if profile.blood_group == 'O+'%}
+                                            <option value="O+" selected>O +ve</option>
+                                            {%else%}
+                                            <option value="O+">O +ve</option>
+                                            {%endif%}
+
+                                            {% if profile.blood_group == 'O-'%}
+                                            <option value="O-" selected>O -ve</option>
+                                            {%else%}
+                                            <option value="O-">O -ve</option>
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mothertongue">Mother Tongue*:</label>
+                                        <select class="list-dt" class="form-control" name="mother_tongue" >
+                                            {% if profile.mother_tongue == 'Bengali'%}
+                                            <option value="Bengali" selected>Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu">Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%elif profile.mother_tongue == 'English'%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English" selected>English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu">Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%elif profile.mother_tongue == 'Gujarati'%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati" selected>Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu">Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%elif profile.mother_tongue == 'Hindi'%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi" selected>Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu">Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%elif profile.mother_tongue == 'Kannada'%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada" selected>Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu">Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%elif profile.mother_tongue == 'Konkani'%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani" selected>Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu">Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%elif profile.mother_tongue == 'Malayalam'%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam" selected>Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu">Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%elif profile.mother_tongue == 'Marathi'%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi" selected>Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu">Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%elif profile.mother_tongue == 'Tamil'%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil" selected>Tamil</option>
+                                            <option value="Telugu">Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%elif profile.mother_tongue == 'Telugu'%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu" selected>Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other">Other</option>
+
+                                            {%else%}
+                                            <option value="Bengali">Bengali</option>
+                                            <option value="English">English</option>
+                                            <option value="Gujarati">Gujarati</option>
+                                            <option value="Hindi">Hindi</option>
+                                            <option value="Kannada">Kannada</option>
+                                            <option value="Konkani">Konkani</option>
+                                            <option value="Malayalam">Malayalam</option>
+                                            <option value="Marathi">Marathi</option>
+                                            <option value="Tamil">Tamil</option>
+                                            <option value="Telugu" selected>Telugu</option>
+                                            <option value="Urdu">Urdu</option>
+                                            <option value="Other" selected>Other</option>
+
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="annualincome">Annual Income*:</label>
+                                        <select class="list-dt" class="form-control" name="annual_income">
+                                            {% if profile.annual_income == '100000'%}
+                                            <option value="100000" selected>Less than 1 Lac.</option>
+                                            <option value="100000-300000">1-3 Lac.</option>
+                                            <option value="300000-600000">3 - 6 Lac.</option>
+                                            <option value="600000-1000000">6 - 10 Lac.</option>
+                                            <option value="1000000-1500000">10 - 15 Lac.</option>
+                                            <option value="1500000-2000000">15 - 20 Lac.</option>
+                                            <option value=">2000000">Above 20 Lac.</option>
+                                            {% elif profile.annual_income == '100000-300000'%}
+                                            <option value="100000">Less than 1 Lac.</option>
+                                            <option value="100000-300000" selected>1-3 Lac.</option>
+                                            <option value="300000-600000">3 - 6 Lac.</option>
+                                            <option value="600000-1000000">6 - 10 Lac.</option>
+                                            <option value="1000000-1500000">10 - 15 Lac.</option>
+                                            <option value="1500000-2000000">15 - 20 Lac.</option>
+                                            <option value=">2000000">Above 20 Lac.</option>
+                                            {% elif profile.annual_income == '300000-600000'%}
+                                            <option value="100000">Less than 1 Lac.</option>
+                                            <option value="100000-300000">1-3 Lac.</option>
+                                            <option value="300000-600000" selected>3 - 6 Lac.</option>
+                                            <option value="600000-1000000">6 - 10 Lac.</option>
+                                            <option value="1000000-1500000">10 - 15 Lac.</option>
+                                            <option value="1500000-2000000">15 - 20 Lac.</option>
+                                            <option value=">2000000">Above 20 Lac.</option>
+                                            {% elif profile.annual_income == '600000-1000000'%}
+                                            <option value="100000">Less than 1 Lac.</option>
+                                            <option value="100000-300000">1-3 Lac.</option>
+                                            <option value="300000-600000">3 - 6 Lac.</option>
+                                            <option value="600000-1000000" selected>6 - 10 Lac.</option>
+                                            <option value="1000000-1500000">10 - 15 Lac.</option>
+                                            <option value="1500000-2000000">15 - 20 Lac.</option>
+                                            <option value=">2000000">Above 20 Lac.</option>
+                                            {% elif profile.annual_income == '1000000-1500000'%}
+                                            <option value="100000">Less than 1 Lac.</option>
+                                            <option value="100000-300000">1-3 Lac.</option>
+                                            <option value="300000-600000">3 - 6 Lac.</option>
+                                            <option value="600000-1000000">6 - 10 Lac.</option>
+                                            <option value="1000000-1500000" selected>10 - 15 Lac.</option>
+                                            <option value="1500000-2000000">15 - 20 Lac.</option>
+                                            <option value=">2000000">Above 20 Lac.</option>
+                                            {% elif profile.annual_income == '1500000-2000000'%}
+                                            <option value="100000">Less than 1 Lac.</option>
+                                            <option value="100000-300000">1-3 Lac.</option>
+                                            <option value="300000-600000">3 - 6 Lac.</option>
+                                            <option value="600000-1000000">6 - 10 Lac.</option>
+                                            <option value="1000000-1500000">10 - 15 Lac.</option>
+                                            <option value="1500000-2000000" selected>15 - 20 Lac.</option>
+                                            <option value=">2000000">Above 20 Lac.</option>
+                                            {%else%}
+                                            <option value="100000">Less than 1 Lac.</option>
+                                            <option value="100000-300000">1-3 Lac.</option>
+                                            <option value="300000-600000">3 - 6 Lac.</option>
+                                            <option value="600000-1000000">6 - 10 Lac.</option>
+                                            <option value="1000000-1500000">10 - 15 Lac.</option>
+                                            <option value="1500000-2000000" selected>15 - 20 Lac.</option>
+                                            <option value=">2000000" selected>Above 20 Lac.</option>
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Religion">Religion*:</label>
+                                        <select class="list-dt" class="form-control" name="religion">
+                                            {% if profile.religion == 'Hinduism'%}
+                                            <option value="Hinduism" selected>Hinduism</option>
+                                            <option value="Muslim">Muslim</option>
+                                            <option value="Christian">Christian</option>
+                                            <option value="Bauddha">Bauddha</option>
+                                            <option value="Parsi">Parsi</option>
+                                            <option value="Other">Other</option>
+
+                                            {% elif profile.religion == 'Muslim'%}
+                                            <option value="Hinduism">Hinduism</option>
+                                            <option value="Muslim" selected>Muslim</option>
+                                            <option value="Christian">Christian</option>
+                                            <option value="Bauddha">Bauddha</option>
+                                            <option value="Parsi">Parsi</option>
+                                            <option value="Other">Other</option>
+
+                                            {% elif profile.religion == 'Christian'%}
+                                            <option value="Hinduism">Hinduism</option>
+                                            <option value="Muslim">Muslim</option>
+                                            <option value="Christian" selected>Christian</option>
+                                            <option value="Bauddha">Bauddha</option>
+                                            <option value="Parsi">Parsi</option>
+                                            <option value="Other">Other</option>
+
+                                            {% elif profile.religion == 'Bauddha'%}
+                                            <option value="Hinduism">Hinduism</option>
+                                            <option value="Muslim">Muslim</option>
+                                            <option value="Christian">Christian</option>
+                                            <option value="Bauddha" selected>Bauddha</option>
+                                            <option value="Parsi">Parsi</option>
+                                            <option value="Other">Other</option>
+
+                                            {% elif profile.religion == 'Parsi'%}
+                                            <option value="Hinduism">Hinduism</option>
+                                            <option value="Muslim">Muslim</option>
+                                            <option value="Christian">Christian</option>
+                                            <option value="Bauddha">Bauddha</option>
+                                            <option value="Parsi" selected>Parsi</option>
+                                            <option value="Other">Other</option>
+
+                                            {%else%}
+                                            <option value="Hinduism">Hinduism</option>
+                                            <option value="Muslim">Muslim</option>
+                                            <option value="Christian">Christian</option>
+                                            <option value="Bauddha">Bauddha</option>
+                                            <option value="Parsi">Parsi</option>
+                                            <option value="Other" selected>Other</option>
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="caste">Caste*:</label>
+                                        <input type="text" class="form-control" value="{{profile.caste}}" name="caste" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subcaste">Sub-caste:</label>
+                                        <input type="text" class="form-control" value="{{profile.sub_caste}}" name="sub_caste"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="birthplace">Place of Birth*:</label>
+                                        <input type="text" class="form-control" value="{{profile.birthplace}}" name="birthplace" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="occupation">Occupation*:</label>
+                                        <select class="list-dt" class="form-control" name="occupation">
+                                            {% if profile.occupation == 'Business'%}
+                                            <option value="Business" selected>Business</option>
+                                            <option value="Farming">Farming</option>
+                                            <option value="Service">Service</option>
+                                            <option value="Worker">Worker</option>
+                                            <option value="Other">Other</option>
+
+                                            {% elif profile.occupation == 'Farming'%}
+                                            <option value="Business">Business</option>
+                                            <option value="Farming" selected>Farming</option>
+                                            <option value="Service">Service</option>
+                                            <option value="Worker">Worker</option>
+                                            <option value="Other">Other</option>
+
+                                            {% elif profile.occupation == 'Service'%}
+                                            <option value="Business">Business</option>
+                                            <option value="Farming">Farming</option>
+                                            <option value="Service" selected>Service</option>
+                                            <option value="Worker">Worker</option>
+                                            <option value="Other">Other</option>
+
+                                            {% elif profile.occupation == 'Worker'%}
+                                            <option value="Business">Business</option>
+                                            <option value="Farming">Farming</option>
+                                            <option value="Service"d>Service</option>
+                                            <option value="Worker" selected>Worker</option>
+                                            <option value="Other">Other</option>
+
+                                            {%else%}
+                                            <option value="Business">Business</option>
+                                            <option value="Farming">Farming</option>
+                                            <option value="Service" selected>Service</option>
+                                            <option value="Worker">Worker</option>
+                                            <option value="Other" selected>Other</option>
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="occupationdetail">Occupation Details:</label>
+                                        <textarea type="text" class="form-control" name="occupation_detail" rows="2">{{profile.occupation_detail}}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Education">Education*:</label>
+                                        <select class="list-dt" class="form-control" name="education" required>
+                                            {% if profile.education == 'Secondary'%}
+                                            <option value="Secondary" selected>Secondary</option>
+                                            <option value="Higher Secondary">Higher Secondary</option>
+                                            <option value="Graduate">Graduate</option>
+                                            <option value="Post Graduate">Post Graduate</option>
+                                            <option value="PhD">PhD</option>
+                                            <option value="Other">Other</option>
+                                            {% elif profile.education == 'Higher Secondary'%}
+                                            <option value="Secondary">Secondary</option>
+                                            <option value="Higher Secondary" selected>Higher Secondary</option>
+                                            <option value="Graduate">Graduate</option>
+                                            <option value="Post Graduate">Post Graduate</option>
+                                            <option value="PhD">PhD</option>
+                                            <option value="Other">Other</option>
+                                            {% elif profile.education == 'Graduate'%}
+                                            <option value="Secondary">Secondary</option>
+                                            <option value="Higher Secondary">Higher Secondary</option>
+                                            <option value="Graduate" selected>Graduate</option>
+                                            <option value="Post Graduate">Post Graduate</option>
+                                            <option value="PhD">PhD</option>
+                                            <option value="Other">Other</option>
+                                            {% elif profile.education == 'Post Graduate'%}
+                                            <option value="Secondary">Secondary</option>
+                                            <option value="Higher Secondary">Higher Secondary</option>
+                                            <option value="Graduate">Graduate</option>
+                                            <option value="Post Graduate" selected>Post Graduate</option>
+                                            <option value="PhD">PhD</option>
+                                            <option value="Other">Other</option>
+                                            {% elif profile.education == 'PhD'%}
+                                            <option value="Secondary">Secondary</option>
+                                            <option value="Higher Secondary">Higher Secondary</option>
+                                            <option value="Graduate">Graduate</option>
+                                            <option value="Post Graduate">Post Graduate</option>
+                                            <option value="PhD" selected>PhD</option>
+                                            <option value="Other">Other</option>
+                                            {%else%}
+                                            <option value="Secondary">Secondary</option>
+                                            <option value="Higher Secondary">Higher Secondary</option>
+                                            <option value="Graduate">Graduate</option>
+                                            <option value="Post Graduate">Post Graduate</option>
+                                            <option value="PhD">PhD</option>
+                                            <option value="Other" selected>Other</option>
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="educationdetails">Education Details:</label>
+                                        <!-- <textarea type="text" class="form-control" value="{{profile.education_detail}}" name="education_detail" rows="2"></textarea> -->
+                                        <textarea type="text" class="form-control" name="education_detail" rows="2">{{profile.education_detail}}</textarea>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="profileimage">Upload latest profile Image*:</label>
+                                        <br/>
+                                        <label for="profileimage">Notes: <br/>A. Please select multiple images (upto 5) at a time if you want to display more than 1 profile image. <br/>B. Please <b>avoid</b> uploading images that falls in below category;</label>
+                                        <ol style="margin-left: 25px;">
+                                            <li>Blur Photos</li>
+                                            <li>Side-faced Photos</li>
+                                            <li>Group Photos</li>
+                                            <li>Watermarked Photos</li>
+                                            <li>Photos in landscape mode</li>
+                                        </ol>
+                                        <a href="javascript:void(0)" onclick="$('#pro-image').click()">Upload Image</a>
+                                        <input type="file" id="pro-image" name="images" style="display: none;" min="1" max="5" multiple>
+                                        <br/><label for="imgInfo">Uploaded images will be displayed in the below box</label>
+                                        <div class="preview-images-zone">
+                                            {% for img in profile.user.img.all %}
+                                            <!-- {{img.id}} -->
+                                            <div class="preview-image preview-show-{{ forloop.counter }}">
+                                                <div class="image-cancel" data-no="{{ forloop.counter }}" data-id={{img.id}}>x</div>
+                                                <div class="image-zone"><img id="pro-img-{{ forloop.counter }}" src="{{img.image.url}}"></div>
+                                            </div>
+                                            {% endfor %}
+
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <input type="text" id="deleteImg_id" name="deleteImg_id" class="form-control" value="" hidden/>
+                                    </div>
+                                    <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-primary setup-content" id="step-2">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Lifestyle</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="drink" class="control-label">Drinking*:</label>
+                                        <div>
+                                            {% if profile.drink_habit == 'Yes'%}
+                                            <input type="radio" style="width:5%;" name="drink_habit" value="Yes" checked/>                                        
+                                            <label for="radio">Yes</label>
+                                            <input type="radio" style="width:5%;" name="drink_habit" value="No"/>
+                                            <label for="radio">No</label>
+                                            {%else%}
+                                            <input type="radio" style="width:5%;"  name="drink_habit" value="Yes"/>                                        
+                                            <label for="radio">Yes</label>
+                                            <input type="radio" style="width:5%;" name="drink_habit" value="No" checked/>
+                                            <label for="radio">No</label>
+                                            {%endif%}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="smoke" class="control-label">Smoking*:</label>
+                                        <div>
+                                            {% if profile.smoke_habit == 'Yes'%}
+                                            <input type="radio" style="width:5%;"  name="smoke_habit" value="Yes"  checked/>                                        
+                                            <label for="radio">Yes</label>
+                                            <input type="radio" style="width:5%;" name="smoke_habit" value="No"/>
+                                            <label for="radio">No</label>
+                                            {%else%}
+                                            <input type="radio" style="width:5%;"  name="smoke_habit" value="Yes"/>                                        
+                                            <label for="radio">Yes</label>
+                                            <input type="radio" style="width:5%;" name="smoke_habit" value="No" checked/>
+                                            <label for="radio">No</label>
+                                            {%endif%}
+                                        </div>
+                                    </div>
+                                    <!-- Ask for physical status & Diet -->
+                                    <div class="form-group">
+                                        <label for="eatinghabbits" class="control-label">Eating Habbits*:</label>
+                                        <input type="text" name="eating_habits" class="form-control" value="{{profile.eating_habits}}" placeholder="Mention veg/non-veg category, Food items that you likes" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hobbies" class="control-label">Hobbies*:</label>
+                                    <input type="text" name="hobbies" class="form-control" value="{{profile.hobbies}}" placeholder="Mention your hobbies/genuine interest separated by comma" required/> 
+                                    </div>
+                                    <button class="btn btn-secondary previousBtn pull-left" type="button">Previous</button>
+                                    <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-primary setup-content" id="step-3">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Horoscope</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="devak" class="control-label">Devak:</label>
+                                    <input type="text" name="devak" class="form-control" value="{{profile.devak}}" placeholder="Mention your Devak" autofocus/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mana" class="control-label">Mana:</label>
+                                    <input type="text" name="mana" class="form-control" value="{{profile.mana}}" placeholder="Mention your Mana" /> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Nadi" class="control-label">Nadi:</label>
+                                    <input type="text" name="nadi" class="form-control" value="{{profile.nadi}}" placeholder="Mention your Nadi" /> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="rassi" class="control-label">Rassi:</label>
+                                    <input type="text" name="rassi" class="form-control" value="{{profile.rassi}}" placeholder="Mention your Rassi" /> 
+                                    </div>
+                                    <button class="btn btn-secondary previousBtn pull-left" type="button">Previous</button>
+                                    <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-primary setup-content" id="step-4">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Family Details</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="fathername" class="control-label">Father Name*:</label>
+                                        <input type="text" name="father_name" value="{{profile.father_name}}" class="form-control" placeholder="Mention Your Father's Name" required autofocus/> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fatheroccupation" class="control-label">Father Occupation*:</label>
+                                        <input type="text" name="father_occupation" value="{{profile.father_occupation}}" class="form-control" placeholder="Mention your Father's Occupation" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mothername" class="control-label">Mother Name*:</label>
+                                        <input type="text" name="mother_name" value="{{profile.mother_name}}" class="form-control" placeholder="Mention Your Mother's Name" required/> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="brothercount" class="control-label">Number of Brothers*:</label>
+                                        <input type="number" name="brother_count" value="{{profile.brother_count}}" class="form-control" placeholder="Mention count of brothers you have 0-10" min="0" max="10" required/> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sistercount" class="control-label">Number of Sisters*:</label>
+                                        <input type="number" name="sister_count" value="{{profile.sister_count}}" class="form-control" placeholder="Mention count of sisters you have 0-10" min="0"  max="10" required/> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="unclecount" class="control-label">Number of Uncle (Kaka):</label>
+                                        <input type="number" name="uncle_count" value="{{profile.uncle_count}}" class="form-control" placeholder="Mention count of uncle (kaka) you have 0-10" min="0" max="10"/>     
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="atyacount" class="control-label">Number of Aunts (Atya):</label>
+                                        <input type="number" name="atya_count" value="{{profile.atya_count}}" class="form-control" placeholder="Mention count of aunts(atya) you have 0-10" min="0"  max="10"/> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mavasicount" class="control-label">Number of Aunts (Mavasi):</label>
+                                        <input type="number" name="mavasi_count" value="{{profile.mavasi_count}}" class="form-control" placeholder="Mention count of aunts(mavasi) you have 0-10" min="0"  max="10"/> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="otherrelatives" class="control-label">Other Relatives:</label>
+                                        <input type="text" name="other_relatives" value="{{profile.other_relatives}}" class="form-control" placeholder="Mention Other relatives in your amily like grandparents, niece etc separated by ," /> 
+                                    </div>
+                                    <!-- <input class="btn btn-success pull-right" type="submit"> -->
+                                    <button class="btn btn-secondary previousBtn pull-left" type="button">Previous</button>
+                                    <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-primary setup-content" id="step-5">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Residential Information</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="address_line1" class="control-label">Address Line1*:</label>
+                                        <input type="text" name="address_line1" value="{{profile.address_line1}}" class="form-control" placeholder="Address Line 1" required autofocus/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address_line2" class="control-label">Address Line2:</label>
+                                        <input type="text" name="address_line2" value="{{profile.address_line2}}" class="form-control" placeholder="Address Line 2"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="city" class="control-label">City/Taluka/Village*:</label>
+                                        <input type="text" name="city" class="form-control" value="{{profile.city}}" placeholder="City/Taluka/Village" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="zipcode" class="control-label">Zip Code*:</label>
+                                        <input type="number" name="zipcode" class="form-control" value="{{profile.zipcode}}" placeholder="Zip Code E.x:123456" minlength="6" maxlength="6" min="0" max="999999" required/> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="district" class="control-label">District*:</label>
+                                        <input type="text" name="district" class="form-control" value="{{profile.district}}" placeholder="District" required/> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="state" class="control-label">State*:</label>
+                                        <input type="text" name="state" class="form-control" value="{{profile.state}}" placeholder="State" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Country" class="control-label">Country*:</label>
+                                        <input type="text" name="country" class="form-control" value="{{profile.country}}" placeholder="Country" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="currentlocation" class="control-label">Current Location*:</label>
+                                        <!-- <input type="text" name="currentLocation" placeholder="Current Address" /> -->
+                                        <textarea type="text" name="current_location" class="form-control" placeholder="Current Address" required>{{profile.current_location}}</textarea>
+                                    </div>
+                                    <button class="btn btn-secondary previousBtn pull-left" type="button">Previous</button>
+                                    <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-primary setup-content" id="step-6">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Declaration</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                            <label for="expectations">Expectations from partener (if any):</label>
+                                            <textarea type="text" class="form-control" name="expectations" rows="4" autofocus>{{profile.expectations}}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PhoneNo">Mobile No.*:</label>
+                                        <input type="tel" name="mobile_no" value="{{profile.user.mobile_no}}" class="form-control" pattern="\d{3}\d{3}\d{4}" placeholder="Mobile No" maxlength="10" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Email">Email*:</label>
+                                        <input type="email" name="email" value="{{profile.user.email}}" class="form-control" placeholder="Email" maxlength="255" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        {% if profile.agree_tnc %}
+                                        <input type="checkbox" name="agree_tnc" required checked>
+                                        {% else %}
+                                        <input type="checkbox" name="agree_tnc" required checked>
+                                        {% endif %}
+                                        <label for="confirmation" class="control-label">The information given by me is correct and I'm solely responsible if anything found wrong.</label>
+                                    </div>
+                                    <input type="hidden" name="paid" value="{{profile.paid}}" >
+                                    <button class="btn btn-secondary previousBtn pull-left" type="button">Previous</button>
+                                    <input id="btnSubmit" class="btn btn-success pull-right" type="submit">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_scripts %}
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+
+// $(document).ready(function(){
+//   $("#btnBeforeSubmit").click(function(){
+//     $('#loader').css('display','block');
+//     $('#btnBeforeSubmit').disabled = true;
+//     $("#myForm").fadeIn();
+//   });
+// });
+// Submit loader
+$(document).ready(function(){
+    $("#btnSubmit" ).click(function() {
+        setInterval(function myFunction(div) {
+            $("#loader").hide();
+            },10000);
+        $("#loader").show();
+    });
+});
+
+// Pre-populating date
+$(document).ready((function () {
+    var date = new Date("{{profile.birthdate}} Z").toISOString().substring(0, 10),
+        field = document.querySelector('#date');
+    field.value = date;
+    //console.log(field.value);
+
+})());
+
+// Create Profile wizard
+$(document).ready(function () {
+
+var navListItems = $('div.setup-panel div a'),
+    allWells = $('.setup-content'),
+    allNextBtn = $('.nextBtn');
+    allPreviousBtn = $('.previousBtn');
+
+allWells.hide();
+
+navListItems.click(function (e) {
+    e.preventDefault();
+    var $target = $($(this).attr('href')),
+        $item = $(this);
+    if (!$item.hasClass('disabled')) {
+        navListItems.removeClass('btn-success').addClass('btn-default');
+        $item.addClass('btn-success');
+        allWells.hide();
+        $target.show();
+        $target.find('input:eq(0)').focus();
+    }
+});
+
+allNextBtn.click(function () {
+    var curStep = $(this).closest(".setup-content"),
+        curStepBtn = curStep.attr("id"),
+        nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+        curInputs = curStep.find("input[type='text'],input[type='url'],input[type='number'],input[type='date'],input[type='tel'],input[type='email']"),
+        isValid = true;
+
+    $(".form-group").removeClass("has-error");
+    for (var i = 0; i < curInputs.length; i++) {
+        if (!curInputs[i].validity.valid) {
+            isValid = false;
+            $(curInputs[i]).closest(".form-group").addClass("has-error");
+        }
+    }
+
+    if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
+    else alert("One/more input fields has error. \nPlease check again");
+});
+
+allPreviousBtn.click(function () {
+    var curStep = $(this).closest(".setup-content"),
+    curStepBtn = curStep.attr("id"),
+    previousStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a"),
+    curInputs = curStep.find("input[type='text'],input[type='url'],input[type='number'],input[type='date']"),
+    isValid = true;
+    if (isValid) previousStepWizard.removeAttr('disabled').trigger('click');
+});
+
+$('div.setup-panel div a.btn-success').trigger('click');
+});
+
+// Image Upload
+let file_count = parseInt("{{profile.user.img.all.count}}");//"{{profile.user.img.all.length}}";
+let file_limit = 5;//Max 5 images per user
+$(document).ready(function() {
+    
+    document.getElementById('pro-image').addEventListener('change', readImage, false);
+    
+    $( ".preview-images-zone" ).sortable();
+    let count = $(this).data('no');
+    $(document).on('click', '.image-cancel', function() {
+        let no = $(this).data('no');
+        $('#deleteImg_id').val($('#deleteImg_id').val() + $(this).data('id') +' ');
+        $(".preview-image.preview-show-"+no).remove();
+        file_count -= 1;
+    });
+});
+
+var num = 4;
+var prevImgArr = [];
+function readImage() {
+    console.log("Welcome to file reader");
+    if (window.File && window.FileList && window.FileReader) {
+        var files = event.target.files; //FileList object
+        //Override earlier images
+        if (prevImgArr.length > 0){
+           alert('Your previously uploaded images from this session will be overwritten.\nDon\'t worry!! You can upload them again by selecting multiple images at once.');
+            for (let i = 0; i < prevImgArr.length; i++) {
+                $(".preview-image.preview-show-"+prevImgArr[i]).remove();
+                console.log(prevImgArr.length);
+                file_count-=1;
+            }
+        }
+        prevImgArr = [];
+        var output = $(".preview-images-zone");
+        //file_count += files.length;
+        if ((file_count+files.length > file_limit) || (files.length > file_limit)){
+            alert("You can upload maximum "+String(file_limit)+" files.");
+        }
+        else{
+        for (let i = 0; i < files.length; i++) {
+            var file = files[i];
+            if (!file.type.match('image')) continue;
+            file_count +=1;
+            var picReader = new FileReader();
+            
+            picReader.addEventListener('load', function (event) {
+                var picFile = event.target;
+                var html =  '<div class="preview-image preview-show-' + num + '">' +
+                            '<div class="image-cancel" data-no="' + num + '">x</div>' +
+                            '<div class="image-zone"><img id="pro-img-' + num + '" src="' + picFile.result + '"></div>' +
+                            '</div>';
+
+                output.append(html);
+                prevImgArr.push(num);
+                num = num + 1;
+            });
+
+            picReader.readAsDataURL(file);
+          }
+        }
+        $("#pro-image").val('images');
+    } else {
+        console.log('Browser not support');
+    }
+}
+</script>
+{% endblock extra_scripts %}

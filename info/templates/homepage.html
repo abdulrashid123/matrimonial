@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!--Header start-->
+<div class="jumbotron text-center bg_Title" style="margin-bottom:0">
+    <h1>Shubh Vivah Vadhu Var Sanstha</h1>
+    <p>Right destination for choosing perfect Life Partner</p> 
+</div>
+<!--Header End-->
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8" style="margin-bottom:2%">
+        <img class="img-fluid" src="{% static 'images/home_4.jpeg' %}" style="max-height: 60vw;
+        width: 60vw" alt="Shubh Vivah">
+    </div>
+    <div class="col-sm-4" style="margin-bottom:2%; border: 4px solid blue; padding: 2%;">
+        <img class="img-fluid mx-auto d-block" id="home_2" src="{% static 'images/home_2.jpg'%}" style="max-width: 100%;" alt="Shubh Vivah">
+        <br/>
+
+         <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+             <button type="submit" class="btn btn-primary btn-block">LOGIN</button><!--Link to User Login page -->
+            <a href="{% url 'info:register' %}" class="btn btn-primary btn-block">REGISTER FREE</a>
+            <a href="{%url 'password_reset'%}" class="btn btn-link">Forgot your password?</a>
+          </form>
+
+    </div>
+  </div>
+</div>
+{% include "profile_slider.html" %}
+<!-- Footer -->
+<!-- <div class="jumbotron text-center bg-light" >
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 footer-info">
+                <h3>Shubha Vivah Sanstha</h3>
+                <p>Right destination for choosing perfect Life Partner</p>
+              </div>
+    
+              <div class="col-md-4 footer-links">
+                <h4>Useful Links</h4>
+                <ul>
+                  <li><i class="ion-ios-arrow-right"></i> <a href="#">Home</a></li>
+                  <li><i class="ion-ios-arrow-right"></i> <a href="#">About us</a></li>
+                  <li><i class="ion-ios-arrow-right"></i> <a href="#">Terms of service</a></li>
+                  <li><i class="ion-ios-arrow-right"></i> <a href="#">Privacy policy</a></li>
+                </ul>
+              </div>
+    
+              <div class="col-md-4 footer-contact">
+                <h4>Contact Us</h4>
+                <p>
+                 Some Address <br>
+                  <strong>Phone:</strong> +91 1234567890<br>
+                  <strong>Email:</strong> info@example.com<br>
+                </p>
+    
+                <div class="social-links">
+                  <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                  <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                  <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+                  <a href="#" class="instagram"><i class="fa fa-youtube"></i></a>
+                </div>
+    
+              </div>
+    
+
+        </div>
+    </div>
+</div> -->
+<!-- Footer End -->
+
+{% endblock content %}
+{% block extra_scripts %}
+  <script>
+    // Disable form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Get the forms we want to add validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+  </script>
+{% endblock extra_scripts %}

@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block extra_head %}
+ <style type="text/css">
+     input {max-width: 12em};
+ </style>
+  {% endblock %}
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <table>{{ form.as_table }}</table>
+        <button type='submit' class='btn btn-primary'>Submit</button>
+    </form>
+{% endblock content%}

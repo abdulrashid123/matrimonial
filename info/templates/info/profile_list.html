@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap_pagination %}
+{% block content %}
+<div class="">
+  <div class="container emp-profile">
+      <div class="d-flex justify-content-between mb-3">
+          <span>
+              {%if request.user.gender == 'Male' %}
+              <h5>Brides</h5>
+              {% else %}
+              <h5>Grooms</h5>
+              {% endif %}
+
+          </span>
+          <!-- TEST -->
+          <!-- TESTEND -->
+          <!-- <span class="iconify mb-6" data-icon="fa-filter" data-inline="false"><p> Apply Filter </p></span> -->
+          <a href="{% url 'info:profile-detail' request.user.profile.id %}"><button class="btn btn-primary add">My Profile</button></a>
+      </div>
+      <!--FILTER-->
+      <div class="row">
+              <div class="col-md-12">
+                      <div class="input-group" id="boot-search-box">
+                              <div class="input-group-btn">
+                                  <div class="btn-group" role="group">
+                                      <div class="dropdown dropdown-lg">
+                                          <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-expanded="false"><span class="iconify mb-6" data-icon="fa-filter" data-inline="false"></span> Personalize Your Search</button>
+                                          <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                              <form class="form-horizontal" role="form">
+                                              <!-- Filter1 - Religion -->
+                                                <div class="form-group">
+                                                  <label class= "col-md-3" for="filter">Religion:</label>
+                                                  <select class="form-control" name="filter_religion" id="multiselectReligion" multiple="multiple">
+                                                      <option value="Hinduism">Hinduism</option>
+                                                      <option value="Muslim">Muslim</option>
+                                                      <option value="Christian">Christian</option>
+                                                      <option value="Bauddha">Bauddha</option>
+                                                      <option value="Parsi">Parsi</option>
+                                                      <option value="Other">Other</option>
+                                                  </select>
+                                                </div>
+                                              <!-- Filter2 - Age -->
+                                                <div class="form-group">
+                                                      <label class= "col-md-3" for="filter">Age:</label>
+                                                      <select class="form-control" name="filter_age"  id="multiselectAge" multiple="multiple">
+                                                          <option value="0-20">Less than or Equal to 20</option>
+                                                          <option value="21-25">21-25</option>
+                                                          <option value="26-30">26-30</option>
+                                                          <option value="31-35">31-35</option>
+                                                          <option value="36-40">36-40</option>
+                                                          <option value="41-100">More than 40</option>
+                                                      </select>
+                                                  </div>
+                                              <!-- Filter3 - Occupation -->
+                                              <div class="form-group">
+                                                      <label class= "col-md-3" for="filter">Occupation:</label>
+                                                      <select class="form-control" name="filter_occupation"  id="multiselectOccupation" multiple="multiple">
+                                                          <option value="Business">Business</option>
+                                                          <option value="Farming">Farming</option>
+                                                          <option value="Service">Service</option>
+                                                          <option value="Worker">Worker</option>
+                                                          <option value="Other">Other</option>
+                                                      </select>
+                                                  </div>
+                                              <!-- Filter4 - Education -->
+                                              <div class="form-group">
+                                                      <label class= "col-md-3" for="filter">Education:</label>
+                                                      <select class="form-control" name="filter_education"  id="multiselectEducation" multiple="multiple">
+                                                          <option value="Secondary">Secondary</option>
+                                                          <option value="Higher Secondary">Higher Secondary</option>
+                                                          <option value="Graduate">Graduate</option>
+                                                          <option value="Post Graduate">Post Graduate</option>
+                                                          <option value="PhD">PhD</option>
+                                                          <option value="Other">Other</option>
+                                                      </select>
+                                                  </div>
+                                                  <!-- Filter5 - Height -->
+                                              <div class="form-group">
+                                                  <label class= "col-md-3" for="filter">Height (0 to 8 ft.):</label>
+                                                  <input type="range" name="filter_height" min="0" max="8" step="0.2" value="6" onchange="updateTextInput(this.value);">
+                                                  <input type="text" id="textInput" value="Below 6 ft." disabled>
+                                              </div>
+                                              <!-- Filter6 - Area -->
+                                              <div class="form-group">
+                                                  <label class= "col-md-3" for="filter">Area:</label>
+                                                  <select class="form-control" name="filter_area"  id="multiselectArea" multiple="multiple">
+                                                      <option value="Sangli">Sangli</option>
+                                                      <option value="Satara">Satara</option>
+                                                      <option value="Kolhapur">Kolhapur</option>
+                                                      <option value="Pune">Pune</option>
+                                                      <option value="Mumbai">Mumbai</option>
+                                                      <option value="Other">Other</option>
+                                                  </select>
+                                              </div>
+                                                <br />
+                                                <button type="submit" class="btn btn-primary btn-block">Search<span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                                <br />
+                                              </form>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+              </div>
+              </div>
+      <!--FILTER END-->
+      <br/>
+      <div class="row g-2">
+  {% for profile in object_list %}
+      {% with profile.user.img.all|first as img %}
+
+              <div class="col-md-3">
+                  <div class="card p-2 py-3 text-center">
+                      <div class="img mb-2"> <img src="{{img.image.url}}" width="50%" class="rounded-circle img_Grid"> </div>
+                      <h5 class="mb-0">{{profile.user.full_name}} {{profile.id}}</h5> <small>{{profile.occupation}}</small>
+                      <!-- <div class="ratings mt-2"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> -->
+                      <div class="mt-4 apointment"> <a href="{% url 'info:profile-detail' profile.id %}"><button class="btn btn-primary text-uppercase">View Details</button></a> </div>
+                  </div>
+              </div>
+      {% endwith %}
+  {% empty %}
+          <div class="col-md-12 text-center"><h5>No profiles yet</h5></div>
+  {% endfor %}
+  </div>
+    <br/>
+  <div class = "d-flex align-items-center justify-content-center" >{% bootstrap_paginate page_obj %}</div>
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/multiselect.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/multiselect.css' %}">
+<!-- Plgin -->
+<script type="text/javascript">
+    // Religion
+    var select = new MSFmultiSelect(
+        document.querySelector('#multiselectReligion'),
+        {
+          theme: 'theme1',selectAll: true,searchBox: false,width: 250,height: 30,
+          onChange:function(checked, value, instance) {
+            //console.log(checked, value, instance);
+          },
+          //appendTo: '#myselect',//readOnly:true,
+          placeholder: 'Religion', //autoHide: false,
+          afterSelectAll:function(checked, values, instance) {
+            //console.log(checked, values, instance);
+          }
+        }
+      );
+      // Age
+      var select = new MSFmultiSelect(
+        document.querySelector('#multiselectAge'),
+        {
+          theme: 'theme1',selectAll: true,searchBox: false,width: 250,height: 30,
+          onChange:function(checked, value, instance) {
+            //console.log(checked, value, instance);
+          },
+          //appendTo: '#myselect',//readOnly:true,
+          placeholder: 'Age', //autoHide: false,
+          afterSelectAll:function(checked, values, instance) {
+            //console.log(checked, values, instance);
+          }
+        }
+      );
+      // Occupation
+      var select = new MSFmultiSelect(
+        document.querySelector('#multiselectOccupation'),
+        {
+          theme: 'theme1',selectAll: true,searchBox: false,width: 250,height: 30,
+          onChange:function(checked, value, instance) {
+            //console.log(checked, value, instance);
+          },
+          //appendTo: '#myselect',//readOnly:true,
+          placeholder: 'Occupation', //autoHide: false,
+          afterSelectAll:function(checked, values, instance) {
+            //console.log(checked, values, instance);
+          }
+        }
+      );
+      // Education
+      var select = new MSFmultiSelect(
+        document.querySelector('#multiselectEducation'),
+        {
+          theme: 'theme1',selectAll: true,searchBox: false,width: 250,height: 30,
+          onChange:function(checked, value, instance) {
+            //console.log(checked, value, instance);
+          },
+          //appendTo: '#myselect',//readOnly:true,
+          placeholder: 'Education', //autoHide: false,
+          afterSelectAll:function(checked, values, instance) {
+            //console.log(checked, values, instance);
+          }
+        }
+      );
+      // Area
+      var select = new MSFmultiSelect(
+        document.querySelector('#multiselectArea'),
+        {
+          theme: 'theme1',selectAll: true,searchBox: false,width: 250,height: 30,
+          onChange:function(checked, value, instance) {
+            //console.log(checked, value, instance);
+          },
+          //appendTo: '#myselect',//readOnly:true,
+          placeholder: 'Area', //autoHide: false,
+          afterSelectAll:function(checked, values, instance) {
+            //console.log(checked, values, instance);
+          }
+        }
+      );
+</script>
+<script>
+    function updateTextInput(val) {
+        document.getElementById('textInput').value='Below '+val+' ft.'; 
+      }
+</script>
+{% endblock extra_scripts %}
+
